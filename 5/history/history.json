@@ -1,1 +1,0 @@
-{"b775c0b4c8998918f6ff44ffd624448f":{"statistic":{"failed":1,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":1},"items":[{"uid":"b3973716bb94fd00","reportUrl":"https://elvinaf1996.github.io/newCalc/5//#testresult/b3973716bb94fd00","status":"failed","statusDetails":"expected:<5000000> but was:<1000000>","time":{"start":1660672902900,"stop":1660672926874,"duration":23974}}]}}

@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"failed","Tue Aug 16 18:01:42 GMT 2022","Tue Aug 16 18:02:06 GMT 2022","23974","","Проверка работы Ипотечного калькулятора","","tests.MortgageCalculatorTest","newBuildingCalculatorTest","Проверка расчета ЕП в новостройке",""

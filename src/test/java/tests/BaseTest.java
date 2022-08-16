@@ -13,29 +13,29 @@ public abstract class BaseTest {
 
     public static final ProjectConfig cfg = ConfigFactory.create(ProjectConfig.class);
 
-    @Before
-    public void setUp() {  // для работы на локальном диске
-        WebDriverManager.chromedriver().setup();
-        Configuration.browser = "chrome";
-        Configuration.driverManagerEnabled = true;
-        Configuration.headless = false;
-        Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 20000;
-    }
-
-//    @Before //для работы на виртуальной машине
-//    public void setUp() {
+//    @Before
+//    public void setUp() {  // для работы на локальном диске
 //        WebDriverManager.chromedriver().setup();
 //        Configuration.browser = "chrome";
 //        Configuration.driverManagerEnabled = true;
+//        Configuration.headless = false;
 //        Configuration.browserSize = "1920x1080";
 //        Configuration.timeout = 20000;
-//        Configuration.remote = "http://localhost:4444/wd/hub";
-//        DesiredCapabilities capabilities = new DesiredCapabilities();
-//        capabilities.setCapability("enableVNC", true);
-//        capabilities.setCapability("enableVideo", true);
-//        Configuration.browserCapabilities = capabilities;
 //    }
+
+    @Before //для работы на виртуальной машине
+    public void setUp() {
+        WebDriverManager.chromedriver().setup();
+        Configuration.browser = "chrome";
+        Configuration.driverManagerEnabled = true;
+        Configuration.browserSize = "1920x1080";
+        Configuration.timeout = 20000;
+        Configuration.remote = "http://localhost:4444/wd/hub";
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+        Configuration.browserCapabilities = capabilities;
+    }
 
     @After
     public void turnDown() {

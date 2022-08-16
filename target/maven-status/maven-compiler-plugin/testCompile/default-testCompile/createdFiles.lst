@@ -1,0 +1,5 @@
+tests\BaseTest.class
+pages\MortgageCalculatorPage.class
+config\ProjectConfig.class
+pages\HomePage.class
+tests\MortgageCalculatorTest.class

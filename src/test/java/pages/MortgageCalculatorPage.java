@@ -48,9 +48,7 @@ public class MortgageCalculatorPage {
     }
 
     //изменение ползунком (вправо/влево)
-    private void movementToTheSide(@NotNull SelenideElement selenideElement, int desiredValue,
-                                                                  int sliderIndexNumber, Keys[] keys,
-                                                                  int differenceInSteps, Keys key){
+    private void movementToTheSide(int sliderIndexNumber, Keys[] keys, int differenceInSteps, Keys key){
         for(int i=0; i<differenceInSteps; i++){
             keys[i] = key;
         }
@@ -65,11 +63,9 @@ public class MortgageCalculatorPage {
         int differenceInSteps = Math.abs(presentValue - desiredValue) / step;
         Keys[] keys = new Keys[differenceInSteps];
         if (desiredValue > presentValue) {
-            movementToTheSide(selenideElement, desiredValue, sliderIndexNumber, keys, differenceInSteps,
-                    Keys.ARROW_RIGHT);
+            movementToTheSide(sliderIndexNumber, keys, differenceInSteps, Keys.ARROW_RIGHT);
         } else if (desiredValue < presentValue) {
-            movementToTheSide(selenideElement, desiredValue, sliderIndexNumber, keys, differenceInSteps,
-                    Keys.ARROW_LEFT);
+            movementToTheSide(sliderIndexNumber, keys, differenceInSteps, Keys.ARROW_LEFT);
         }
     }
 

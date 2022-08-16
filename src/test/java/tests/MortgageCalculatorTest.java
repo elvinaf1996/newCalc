@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Attachment;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import pages.HomePage;
@@ -35,5 +36,15 @@ public class MortgageCalculatorTest extends BaseTest{
                 .loanAmountCheck(realEstateValue, downPaymentAmount)
                 .checkingTheMonthlyPayment(realEstateValue, downPaymentAmount, countOfYear)
                 .checkingTheAmountOfTheTaxDeduction(realEstateValue, downPaymentAmount, countOfYear);
+    }
+
+    @Attachment
+    public <ActionSequence> String performedActions(ActionSequence actionSequence) {
+        return actionSequence.toString();
+    }
+
+    @Attachment(value = "Page screenshot", type = "image/png")
+    public byte[] saveScreenshot(byte[] screenShot) {
+        return screenShot;
     }
 }

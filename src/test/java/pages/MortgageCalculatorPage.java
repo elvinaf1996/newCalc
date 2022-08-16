@@ -7,13 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.Assert.assertEquals;
 
 public class MortgageCalculatorPage {
@@ -57,18 +51,10 @@ public class MortgageCalculatorPage {
     private void movementToTheSide(@NotNull SelenideElement selenideElement, int desiredValue,
                                                                   int sliderIndexNumber, Keys[] keys,
                                                                   int differenceInSteps, Keys key){
-        int presentValue;
         for(int i=0; i<differenceInSteps; i++){
             keys[i] = key;
         }
         $$(SLIDERS).get(sliderIndexNumber).sendKeys(keys);
-        presentValue = Integer.parseInt(
-                (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
-        while (presentValue != desiredValue) {
-            $$(SLIDERS).get(sliderIndexNumber).sendKeys(key);
-            presentValue = Integer.parseInt(
-                    (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-        }
     }
 
     //установка значения ползунком
@@ -76,8 +62,7 @@ public class MortgageCalculatorPage {
                                                  int sliderIndexNumber, int step) {
         int presentValue = Integer.parseInt(
                 (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
-        int difference = Math.abs(presentValue - desiredValue);
-        int differenceInSteps = difference / step;
+        int differenceInSteps = Math.abs(presentValue - desiredValue) / step;
         Keys[] keys = new Keys[differenceInSteps];
         if (desiredValue > presentValue) {
             movementToTheSide(selenideElement, desiredValue, sliderIndexNumber, keys, differenceInSteps,
@@ -104,6 +89,7 @@ public class MortgageCalculatorPage {
 
     @Step("Вводим сумму первоначального взноса: {0}")
     public MortgageCalculatorPage enterTheAmountOfTheDownPayment(int downPaymentAmount) {
+        sleep(2000);
         int step = 10_000;
         setTheDesiredValueWithTheSlider(
                 $(INITIAL_PAYMENT_INPUT_FIELD), downPaymentAmount, 1, step);

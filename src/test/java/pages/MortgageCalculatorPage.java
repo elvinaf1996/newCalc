@@ -7,6 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.junit.Assert.assertEquals;
@@ -48,65 +53,38 @@ public class MortgageCalculatorPage {
         return refundAmount;
     }
 
-    //установка значения ползунком для суммы недвижимости
-    private void setTheDesiredValueWithTheSliderForSum(@NotNull SelenideElement selenideElement, int desiredValue,
-                                                 int sliderIndexNumber) {
-        int presentValue = Integer.parseInt(
+    //изменение ползунком (вправо/влево)
+    private void movementToTheSide(@NotNull SelenideElement selenideElement, int desiredValue,
+                                                                  int sliderIndexNumber, Keys[] keys,
+                                                                  int differenceInSteps, Keys key){
+        int presentValue;
+        for(int i=0; i<differenceInSteps; i++){
+            keys[i] = key;
+        }
+        $$(SLIDERS).get(sliderIndexNumber).sendKeys(keys);
+        presentValue = Integer.parseInt(
                 (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
-        if (desiredValue > presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_RIGHT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
-        } else if (desiredValue < presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
+        while (presentValue != desiredValue) {
+            $$(SLIDERS).get(sliderIndexNumber).sendKeys(key);
+            presentValue = Integer.parseInt(
+                    (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
         }
     }
 
-    //установка значения ползунком для ПВ
-    private void setTheDesiredValueWithTheSliderForPV(@NotNull SelenideElement selenideElement, int desiredValue,
-                                                       int sliderIndexNumber) {
+    //установка значения ползунком
+    private void setTheDesiredValueWithTheSlider(@NotNull SelenideElement selenideElement, int desiredValue,
+                                                 int sliderIndexNumber, int step) {
         int presentValue = Integer.parseInt(
                 (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
+        int difference = Math.abs(presentValue - desiredValue);
+        int differenceInSteps = difference / step;
+        Keys[] keys = new Keys[differenceInSteps];
         if (desiredValue > presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT,
-                        Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
+            movementToTheSide(selenideElement, desiredValue, sliderIndexNumber, keys, differenceInSteps,
+                    Keys.ARROW_RIGHT);
         } else if (desiredValue < presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT,
-                        Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
-        }
-    }
-
-    //установка значения ползунком для количества лет
-    private void setTheDesiredValueWithTheSliderForYear(@NotNull SelenideElement selenideElement, int desiredValue,
-                                                      int sliderIndexNumber) {
-        int presentValue = Integer.parseInt(
-                (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
-        if (desiredValue > presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
-        } else if (desiredValue < presentValue) {
-            while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT);
-                presentValue = Integer.parseInt(
-                        (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
-            }
+            movementToTheSide(selenideElement, desiredValue, sliderIndexNumber, keys, differenceInSteps,
+                    Keys.ARROW_LEFT);
         }
     }
 
@@ -119,21 +97,24 @@ public class MortgageCalculatorPage {
 
     @Step("Вводим стоимость недвижимости: {0}")
     public MortgageCalculatorPage enterTheValueOfTheProperty(int realEstateValue) {
-        setTheDesiredValueWithTheSliderForSum($(INPUT_FIELD_COST_OF_REAL_ESTATE), realEstateValue, 0);
+        int step = 500_000;
+        setTheDesiredValueWithTheSlider($(INPUT_FIELD_COST_OF_REAL_ESTATE), realEstateValue, 0, step);
         return this;
     }
 
     @Step("Вводим сумму первоначального взноса: {0}")
     public MortgageCalculatorPage enterTheAmountOfTheDownPayment(int downPaymentAmount) {
-        setTheDesiredValueWithTheSliderForPV(
-                $(INITIAL_PAYMENT_INPUT_FIELD), downPaymentAmount, 1);
+        int step = 10_000;
+        setTheDesiredValueWithTheSlider(
+                $(INITIAL_PAYMENT_INPUT_FIELD), downPaymentAmount, 1, step);
         return this;
     }
 
     @Step("Вводим срок кредита: {0}")
     public MortgageCalculatorPage enterTheTermOfTheLoan(int countOfYear) {
+        int step = 1;
         $(LOAN_TERM_ENTRY_FIELD).scrollTo();
-        setTheDesiredValueWithTheSliderForYear($(LOAN_TERM_ENTRY_FIELD), countOfYear, 2);
+        setTheDesiredValueWithTheSlider($(LOAN_TERM_ENTRY_FIELD), countOfYear, 2, step);
         return this;
     }
 

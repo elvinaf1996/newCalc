@@ -9,10 +9,10 @@ jobs:
   install_dependency_and_run_test:
     runs-on: ubuntu-latest
     steps:
-      - name: "Скачиваем селенойд"
+      - name: "Скачиваем селеноид"
         run: curl -s https://aerokube.com/cm/bash  | bash
 
-      - name: "Даем права на запуск селенойда"
+      - name: "Даем права на запуск селеноида"
         run: chmod +x ./cm
 
       - name: "Запускаем selenoid"

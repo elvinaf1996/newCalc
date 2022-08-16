@@ -30,12 +30,10 @@ public class MortgageCalculatorTest extends BaseTest{
         MortgageCalculatorPage mortgageCalculatorPage = new MortgageCalculatorPage();
         mortgageCalculatorPage.chooseALoanProgram(programNewBuilding)
                 .enterTheValueOfTheProperty(realEstateValue)
-                .enterTheAmountOfTheDownPayment(downPaymentAmount);
-
-
-                /*.enterTheTermOfTheLoan(countOfYear)
+                .enterTheAmountOfTheDownPayment(downPaymentAmount)
+                .enterTheTermOfTheLoan(countOfYear)
                 .loanAmountCheck(realEstateValue, downPaymentAmount)
                 .checkingTheMonthlyPayment(realEstateValue, downPaymentAmount, countOfYear)
-                .checkingTheAmountOfTheTaxDeduction(realEstateValue, downPaymentAmount, countOfYear);*/
+                .checkingTheAmountOfTheTaxDeduction(realEstateValue, downPaymentAmount, countOfYear);
     }
 }

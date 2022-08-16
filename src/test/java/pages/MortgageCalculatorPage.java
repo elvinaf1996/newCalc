@@ -61,7 +61,7 @@ public class MortgageCalculatorPage {
             }
         } else if (desiredValue < presentValue) {
             while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT);
+                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT);
                 presentValue = Integer.parseInt(
                         (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
             }
@@ -75,13 +75,15 @@ public class MortgageCalculatorPage {
                 (selenideElement.getAttribute("value")).replaceAll("\\D+", ""));
         if (desiredValue > presentValue) {
             while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT);
+                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT,
+                        Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT);
                 presentValue = Integer.parseInt(
                         (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
             }
         } else if (desiredValue < presentValue) {
             while (presentValue != desiredValue) {
-                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT);
+                $$(SLIDERS).get(sliderIndexNumber).sendKeys(Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT,
+                        Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT);
                 presentValue = Integer.parseInt(
                         (selenideElement.getAttribute("value").replaceAll("\\D+", "")));
             }
